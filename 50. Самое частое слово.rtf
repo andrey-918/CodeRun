@@ -1,0 +1,24 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2758
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 def get_answer(a):\
+    dictionary = dict()\
+    answer = -1\
+    answer_word = '\'9c\uc0\u8721 \'b4\'ae\'86\'a5\'a8\'83\'88\'f8\'df\u8706 \'83'\
+    for i in a:\
+        if i not in dictionary:\
+            dictionary[i] = 0\
+        dictionary[i] += 1\
+        if dictionary[i] > answer or (dictionary[i] == answer and answer_word > i):\
+            answer = dictionary[i]\
+            answer_word = i\
+    return answer_word\
+\
+    \
+with open('input.txt', 'r') as f:\
+    a = f.read().split()\
+    print(get_answer(a))}
