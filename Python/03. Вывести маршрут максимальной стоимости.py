@@ -1,0 +1,31 @@
+def get_answer(n, m, A):
+    dp = [[-10000000000 for i in range(m + 1)] for j in range (n + 1)]
+    dp[1][1] = A[0][0]
+    answer = []
+    for i in range (1, n + 1):
+        for j in range (1, m + 1):
+            if i == j and i == 1:continue
+            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]) + A[i - 1][j - 1]
+    x = m
+    y = n
+    while x > 1 and y > 1:
+
+        if dp[y - 1][x] >= dp[y][x - 1]:
+            y -= 1
+            answer.append('D')
+        else:
+            x -= 1
+            answer.append('R')
+    for i in range (x - 1):
+        answer.append('R')
+    for i in range (y - 1):
+        answer.append('D')
+    return dp[n][m], reversed(answer)
+n, m = map(int, input().split())
+A = []
+for i in range (n):
+    buf = list(map(int, input().split()))
+    A.append(buf)
+number, answer = get_answer(n, m, A)
+print(number)
+print(*answer)
