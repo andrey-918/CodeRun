@@ -34,10 +34,16 @@ func main() {
 	}
 
 	visited := make([]bool, n + 1)
-	var order []int
-	DFS(arr, 1, visited, &order)
 
-	writer.WriteString(strconv.Itoa(len(order)))
+	DFS(arr, 1, visited)
+
+	var count int
+	for _, num := range visited {
+		if num {
+			count++
+		}
+	}
+	writer.WriteString(strconv.Itoa(count))
 	writer.WriteByte('\n')
 	
 	for i, num := range visited {
@@ -59,12 +65,11 @@ func IndexFunc(slice []int, target int) bool {
     return false
 }
 
-func DFS(graph [][]int, index int, visited []bool, order *[]int) {
+func DFS(graph [][]int, index int, visited []bool) {
 	visited[index] = true
-	*order = append(*order, index)
 	for _, num := range graph[index] {
 		if !visited[num] {
-			DFS(graph, num, visited, order)
+			DFS(graph, num, visited)
 		}
 	}
 }
