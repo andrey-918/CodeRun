@@ -32,13 +32,29 @@ func main() {
 	start, _ := strconv.Atoi(parts[0])
 	finish, _ := strconv.Atoi(parts[1])
 
-	writer.WriteString(strconv.Itoa(minDist(N, nodes, start, finish)))
+	dist, prev := minRoad(N, nodes, start, finish)
+	writer.WriteString(strconv.Itoa(dist) + "\n")
+
+	if dist > 0 {
+		var answerRoad []int
+		answerRoad = append(answerRoad, finish)
+		curNode := finish
+		for prev[curNode] != 0 {
+			curNode = prev[curNode]
+			answerRoad = append(answerRoad, curNode)
+		}
+		for i := len(answerRoad) - 1; i > -1; i-- {
+			writer.WriteString(strconv.Itoa(answerRoad[i]) + " ")
+		}
+	}
+
+
 }
 
-func minDist(N int, nodes [][]int, start int, finish int) int {
+func minRoad(N int, nodes [][]int, start int, finish int) (int, []int) {
 	// Если начальная и конечная вершины совпадают
 	if start == finish {
-		return 0
+		return 0, []int{}
 	}
 
 	// Используем очередь для BFS
@@ -51,6 +67,9 @@ func minDist(N int, nodes [][]int, start int, finish int) int {
 		dist[i] = -1 // -1 означает, что вершина еще не посещена
 	}
 	dist[start] = 0
+
+	// Массив для хранения информации о предке
+	prev := make([]int, N+1)
 	
 	// BFS обход
 	for len(queue) > 0 {
@@ -62,10 +81,11 @@ func minDist(N int, nodes [][]int, start int, finish int) int {
 			// Если сосед еще не посещен
 			if dist[neighbor] == -1 {
 				dist[neighbor] = dist[current] + 1
+				prev[neighbor] = current
 				
 				// Если достигли конечной вершины, возвращаем расстояние
 				if neighbor == finish {
-					return dist[neighbor]
+					return dist[neighbor], prev
 				}
 				
 				queue = append(queue, neighbor)
@@ -74,5 +94,5 @@ func minDist(N int, nodes [][]int, start int, finish int) int {
 	}
 	
 	// Если путь не найден
-	return dist[finish]
+	return dist[finish], []int{}
 }
